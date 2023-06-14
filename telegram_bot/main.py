@@ -543,7 +543,7 @@ async def on_message(message: types.Message):
     if message.text == "\U00002b05 Назад к материалам":
         if is_admin(tgid=message.from_user.id):
             db.execute(f"UPDATE waspadmins SET checking_homework_date = NULL, checking_homework_student = NULL, checking_marks_student = NULL, setting_mark_date = NULL;")
-        await materials_list(message)
+        await materials_page(message)
         return
     if message.text == "\U00002b05 Назад к домашним заданиям":
         if is_admin(tgid=message.from_user.id):
