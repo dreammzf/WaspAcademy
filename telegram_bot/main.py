@@ -28,7 +28,7 @@ except:
     pass
 
 #Токен бота
-API_TOKEN = 'BOT TOKEN'
+API_TOKEN = 'BOT_TOKEN'
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
@@ -37,10 +37,10 @@ registration = True
 
 #Подключение к базе данных
 def db_connect():
-    host = "wasp-edu-tg-server.postgres.database.azure.com"
-    dbname = "postgres"
-    user = "dbadmin"
-    password = "hVsx8LVvZpwLf06hgzxf8cxiHE1Bq95U0MmKve07ZUEpWiop"
+    host = "DBHOST"
+    dbname = "DBNAME"
+    user = "DBUSER"
+    password = "DBPASSWORD"
     try:
         connection = psycopg2.connect(host=host,
                                 dbname=dbname,
@@ -675,10 +675,10 @@ async def on_message(message: types.Message):
             return
         db.execute(f"SELECT telegramid FROM waspusers WHERE name = '{name}' AND surname = '{surname}';")
         users = db.fetchall()
-        db.execute(f"UPDATE waspadmins SET finding_user = FALSE WHERE telegramid = {message.from_user.id};")
         if not users:
             await message.answer(f"{surname} {name} не зарегистрирован на курсе.")
             return
+        db.execute(f"UPDATE waspadmins SET finding_user = FALSE WHERE telegramid = {message.from_user.id};")
         for user in users:
             db.execute(f"SELECT surname, name, lastname, telegramname, discordid FROM waspusers WHERE telegramid = '{user[0]}';")
             data = db.fetchone()
