@@ -11,7 +11,7 @@ from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import plotly.figure_factory as ff #Отрисовка таблицы
 import pandas #Анализ данных
-import kaleido #Генерация изображений
+import kaleido #Генерация изображений (движок)
 
 #Создание директорий
 try:
@@ -33,7 +33,7 @@ API_TOKEN = 'BOT TOKEN'
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
-
+registration = True
 
 #Подключение к базе данных
 def db_connect():
@@ -298,13 +298,19 @@ def add_stingers(tgid=None, tgname=None, stingers=0):
 
 #Домашняя страница
 async def homepage(message: types.Message):
+    global registration
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if is_admin(tgid=message.from_user.id):
+        if registration:
+            registration_button = "\U0001F6AB Закрыть регистрацию"
+        else:
+            registration_button = "\u2705 Открыть регистрацию"
         keyboard.add("\U0001F9CD Ученики")
         keyboard.add("\U0001F4DA Материалы текущего модуля")
         keyboard.add("\U0001F4CA Оценки и посещаемость")
         keyboard.add("\U0001F4E2 Сделать объявление")
         keyboard.add("\U0001F3EE Назначить организатора")
+        keyboard.add(registration_button)
         await message.answer(f"Добрый день, {select_admin_name(message.from_user.id)}", reply_markup=keyboard)
     else:
         keyboard.add("\U0001F41D Профиль")
@@ -475,14 +481,15 @@ async def button5(callback_query: types.CallbackQuery):
 #Обработка нажатия кнопок
 @dp.message_handler(content_types=types.ContentType.ANY)
 async def on_message(message: types.Message):
+    global registration
     if is_removed(tgid=message.from_user.id):
         await message.answer(str(message.from_user.full_name) + ", вы были исключены из курса. \nОбратитесь к организатору.")
         return
     if not is_user(message.from_user.id) and not is_admin(tgid=message.from_user.id):
-        msg = message.text.split(" ")
-        if len(msg) != 3:
-            await message.answer("Добрый день, для регистрации напишите ваши ФИО.")
+        if not registration:
+            await message.answer("\u2757 В настоящий момент регистрация на курс закрыта.")
             return
+        msg = message.text.split(" ")
         surname = msg[1]
         name = msg[0]
         lastname = msg[2]
@@ -509,6 +516,18 @@ async def on_message(message: types.Message):
             db.execute(f"UPDATE waspadmins SET announcing = FALSE WHERE telegramid = {message.from_user.id};")
             await homepage(message)
         return
+    if message.text == "\U0001F6AB Закрыть регистрацию":
+        if not is_admin(tgid=message.from_user.id):
+            return
+        registration = False
+        await message.answer("\U0001F6AB Регистрация на курс закрыта.")
+        await homepage(message)
+    if message.text == "\u2705 Открыть регистрацию":
+        if not is_admin(tgid=message.from_user.id):
+            return
+        registration = True
+        await message.answer("\u2705 Регистрация на курс открыта.")
+        await homepage(message)
     if message.text == "\U0001F3EE Назначить организатора":
         if not is_admin(tgid=message.from_user.id):
             return
