@@ -9,11 +9,11 @@ from aiogram import Bot, Dispatcher, executor, types
 from datetime import datetime, timedelta
 from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-import plotly.figure_factory as ff #Отрисовка таблицы
-import pandas #Анализ данных
-import kaleido #Генерация изображений
+import plotly.figure_factory as ff #ГЋГІГ°ГЁГ±Г®ГўГЄГ  ГІГ ГЎГ«ГЁГ¶Г»
+import pandas #ГЂГ­Г Г«ГЁГ§ Г¤Г Г­Г­Г»Гµ
+import kaleido #ГѓГҐГ­ГҐГ°Г Г¶ГЁГї ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГ©
 
-#Создание директорий
+#Г‘Г®Г§Г¤Г Г­ГЁГҐ Г¤ГЁГ°ГҐГЄГІГ®Г°ГЁГ©
 try:
     os.mkdir("materials")
 except:
@@ -27,7 +27,7 @@ try:
 except:
     pass
 
-#Токен бота
+#Г’Г®ГЄГҐГ­ ГЎГ®ГІГ 
 API_TOKEN = '6129510695:AAEbZco2cX_cHSXrgeClHfpoklvCGgRXR58'
 
 logging.basicConfig(level=logging.INFO)
@@ -35,7 +35,7 @@ bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
 
-#Подключение к базе данных
+#ГЏГ®Г¤ГЄГ«ГѕГ·ГҐГ­ГЁГҐ ГЄ ГЎГ Г§ГҐ Г¤Г Г­Г­Г»Гµ
 def db_connect():
     host = "wasp-edu-tg-server.postgres.database.azure.com"
     dbname = "postgres"
@@ -61,7 +61,7 @@ except:
     pass
 
 
-#Получение имени пользователя
+#ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ ГЁГ¬ГҐГ­ГЁ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 def select_user_name(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -75,7 +75,7 @@ def select_user_name(tgid=None, tgname=None):
         print(f"Unable to select user's name")
 
 
-#Получение имени пользователя
+#ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ ГЁГ¬ГҐГ­ГЁ ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 def select_users_id():
     try:
         db.execute(f"SELECT telegramid FROM waspusers;")
@@ -85,7 +85,7 @@ def select_users_id():
         print(f"Unable to select users' ids")
 
 
-#Получение имени администратора
+#ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ ГЁГ¬ГҐГ­ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°Г 
 def select_admin_name(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -99,7 +99,7 @@ def select_admin_name(tgid=None, tgname=None):
         print(f"Unable to select admin's name")
 
 
-#Получение telegram id администратора
+#ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ telegram id Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°Г 
 def select_admins_id():
     try:
         db.execute(f"SELECT telegramid FROM waspadmins;")
@@ -109,7 +109,7 @@ def select_admins_id():
         print(f"Unable to select admins' ids")
 
 
-#Проверка нахождения в участниках
+#ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г ГµГ®Г¦Г¤ГҐГ­ГЁГї Гў ГіГ·Г Г±ГІГ­ГЁГЄГ Гµ
 def is_user(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -124,7 +124,7 @@ def is_user(tgid=None, tgname=None):
         print(f"Unable to check if user is registered")
 
 
-#Проверка нахождения в администраторах
+#ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г ГµГ®Г¦Г¤ГҐГ­ГЁГї Гў Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°Г Гµ
 def is_admin(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -139,7 +139,7 @@ def is_admin(tgid=None, tgname=None):
         print(f"Unable to check if user is admin")
 
 
-#Проверка нахождения в исключённых участниках
+#ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г ГµГ®Г¦Г¤ГҐГ­ГЁГї Гў ГЁГ±ГЄГ«ГѕГ·ВёГ­Г­Г»Гµ ГіГ·Г Г±ГІГ­ГЁГЄГ Гµ
 def is_removed(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -154,7 +154,7 @@ def is_removed(tgid=None, tgname=None):
     return False
 
 
-#Проверка, отправляет ли ученик дз
+#ГЏГ°Г®ГўГҐГ°ГЄГ , Г®ГІГЇГ°Г ГўГ«ГїГҐГІ Г«ГЁ ГіГ·ГҐГ­ГЁГЄ Г¤Г§
 def sending_homework(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -169,7 +169,7 @@ def sending_homework(tgid=None, tgname=None):
     return False
 
 
-#Проверка, создаёт ли администратор материал
+#ГЏГ°Г®ГўГҐГ°ГЄГ , Г±Г®Г§Г¤Г ВёГІ Г«ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° Г¬Г ГІГҐГ°ГЁГ Г«
 def creating_material(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -184,7 +184,7 @@ def creating_material(tgid=None, tgname=None):
     return False
 
 
-#Проверка, создаёт ли администратор дз
+#ГЏГ°Г®ГўГҐГ°ГЄГ , Г±Г®Г§Г¤Г ВёГІ Г«ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° Г¤Г§
 def creating_homework(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -199,7 +199,7 @@ def creating_homework(tgid=None, tgname=None):
     return False
 
 
-#Проверка, ищет ли администратор ученика
+#ГЏГ°Г®ГўГҐГ°ГЄГ , ГЁГ№ГҐГІ Г«ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° ГіГ·ГҐГ­ГЁГЄГ 
 def finding_user(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -214,7 +214,7 @@ def finding_user(tgid=None, tgname=None):
     return False
 
 
-#Проверка, удаляет ли администратор участника
+#ГЏГ°Г®ГўГҐГ°ГЄГ , ГіГ¤Г Г«ГїГҐГІ Г«ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° ГіГ·Г Г±ГІГ­ГЁГЄГ 
 def removing_user(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -229,7 +229,7 @@ def removing_user(tgid=None, tgname=None):
     return False
 
 
-#Проверка, отправляет ли администратор объявление
+#ГЏГ°Г®ГўГҐГ°ГЄГ , Г®ГІГЇГ°Г ГўГ«ГїГҐГІ Г«ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° Г®ГЎГєГїГўГ«ГҐГ­ГЁГҐ
 def announcing(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -244,7 +244,7 @@ def announcing(tgid=None, tgname=None):
     return False
 
 
-#Проверка, добавляет ли администратор организатора
+#ГЏГ°Г®ГўГҐГ°ГЄГ , Г¤Г®ГЎГ ГўГ«ГїГҐГІ Г«ГЁ Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г° Г®Г°ГЈГ Г­ГЁГ§Г ГІГ®Г°Г 
 def setting_admin(tgid=None, tgname=None):
     try:
         if tgid == None:
@@ -259,7 +259,7 @@ def setting_admin(tgid=None, tgname=None):
     return False
 
 
-#Регистрация нового пользователя
+#ГђГҐГЈГЁГ±ГІГ°Г Г¶ГЁГї Г­Г®ГўГ®ГЈГ® ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї
 def tgreg_user(tgid, tgname, name, surname, lastname):
     try:
         db.execute(f"SELECT * FROM waspusers WHERE telegramid = {tgid};")
@@ -270,7 +270,7 @@ def tgreg_user(tgid, tgname, name, surname, lastname):
         print(f"Unable to register a new user")
 
 
-#Регистрация нового администратора
+#ГђГҐГЈГЁГ±ГІГ°Г Г¶ГЁГї Г­Г®ГўГ®ГЈГ® Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°Г 
 def tgreg_admin(tgid, tgname, name, surname, lastname):
     try:
         db.execute(f"SELECT * FROM waspadmins WHERE telegramid = {tgid};")
@@ -281,7 +281,7 @@ def tgreg_admin(tgid, tgname, name, surname, lastname):
         print(f"Unable to register a new admin")
 
 
-#Добавить ученику стингеры
+#Г„Г®ГЎГ ГўГЁГІГј ГіГ·ГҐГ­ГЁГЄГі Г±ГІГЁГ­ГЈГҐГ°Г»
 def add_stingers(tgid=None, tgname=None, stingers=0):
     # try:
     if tgid == None:
@@ -296,108 +296,108 @@ def add_stingers(tgid=None, tgname=None, stingers=0):
     #     print(f"Unable to add stingers to user")
 
 
-#Домашняя страница
+#Г„Г®Г¬Г ГёГ­ГїГї Г±ГІГ°Г Г­ГЁГ¶Г 
 async def homepage(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if is_admin(tgid=message.from_user.id):
-        keyboard.add("\U0001F9CD Ученики")
-        keyboard.add("\U0001F4DA Материалы текущего модуля")
-        keyboard.add("\U0001F4CA Оценки и посещаемость")
-        keyboard.add("\U0001F4E2 Сделать объявление")
-        keyboard.add("\U0001F3EE Назначить организатора")
-        await message.answer(f"Добрый день, {select_admin_name(message.from_user.id)}", reply_markup=keyboard)
+        keyboard.add("\U0001F9CD Г“Г·ГҐГ­ГЁГЄГЁ")
+        keyboard.add("\U0001F4DA ГЊГ ГІГҐГ°ГЁГ Г«Г» ГІГҐГЄГіГ№ГҐГЈГ® Г¬Г®Г¤ГіГ«Гї")
+        keyboard.add("\U0001F4CA ГЋГ¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј")
+        keyboard.add("\U0001F4E2 Г‘Г¤ГҐГ«Г ГІГј Г®ГЎГєГїГўГ«ГҐГ­ГЁГҐ")
+        keyboard.add("\U0001F3EE ГЌГ Г§Г­Г Г·ГЁГІГј Г®Г°ГЈГ Г­ГЁГ§Г ГІГ®Г°Г ")
+        await message.answer(f"Г„Г®ГЎГ°Г»Г© Г¤ГҐГ­Гј, {select_admin_name(message.from_user.id)}", reply_markup=keyboard)
     else:
-        keyboard.add("\U0001F41D Профиль")
-        keyboard.add("\U0001F4DA Материалы текущего модуля")
-        keyboard.add("\U0001F4CA Оценки и посещаемость")
-        await message.answer(f"Добрый день, {select_user_name(message.from_user.id)}", reply_markup=keyboard)
+        keyboard.add("\U0001F41D ГЏГ°Г®ГґГЁГ«Гј")
+        keyboard.add("\U0001F4DA ГЊГ ГІГҐГ°ГЁГ Г«Г» ГІГҐГЄГіГ№ГҐГЈГ® Г¬Г®Г¤ГіГ«Гї")
+        keyboard.add("\U0001F4CA ГЋГ¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј")
+        await message.answer(f"Г„Г®ГЎГ°Г»Г© Г¤ГҐГ­Гј, {select_user_name(message.from_user.id)}", reply_markup=keyboard)
 
 
-#Страница участников
+#Г‘ГІГ°Г Г­ГЁГ¶Г  ГіГ·Г Г±ГІГ­ГЁГЄГ®Гў
 async def students_page(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row_width = 2
-    keyboard.add(*["\U0001F9FE Список участников", "\U0001F50E Найти участника", "\U0001F6AB Исключить участника"])
-    keyboard.add("\U00002b05 Назад на главную")
-    await message.answer("\U0001F9CD Ученики", reply_markup=keyboard)
+    keyboard.add(*["\U0001F9FE Г‘ГЇГЁГ±Г®ГЄ ГіГ·Г Г±ГІГ­ГЁГЄГ®Гў", "\U0001F50E ГЌГ Г©ГІГЁ ГіГ·Г Г±ГІГ­ГЁГЄГ ", "\U0001F6AB Г€Г±ГЄГ«ГѕГ·ГЁГІГј ГіГ·Г Г±ГІГ­ГЁГЄГ "])
+    keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ")
+    await message.answer("\U0001F9CD Г“Г·ГҐГ­ГЁГЄГЁ", reply_markup=keyboard)
 
 
-#Страница выбора материалов или дз
+#Г‘ГІГ°Г Г­ГЁГ¶Г  ГўГ»ГЎГ®Г°Г  Г¬Г ГІГҐГ°ГЁГ Г«Г®Гў ГЁГ«ГЁ Г¤Г§
 async def overall_materials_page(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row_width = 2
-    keyboard.add(*["\U0001F4D2 Материалы", "\U0001F4CB Задания", "\U00002b05 Назад на главную"])
-    await message.answer("\U0001F4DA Материалы текущего модуля", reply_markup=keyboard)
+    keyboard.add(*["\U0001F4D2 ГЊГ ГІГҐГ°ГЁГ Г«Г»", "\U0001F4CB Г‡Г Г¤Г Г­ГЁГї", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+    await message.answer("\U0001F4DA ГЊГ ГІГҐГ°ГЁГ Г«Г» ГІГҐГЄГіГ№ГҐГЈГ® Г¬Г®Г¤ГіГ«Гї", reply_markup=keyboard)
 
 
-#Страница материалов
+#Г‘ГІГ°Г Г­ГЁГ¶Г  Г¬Г ГІГҐГ°ГЁГ Г«Г®Гў
 async def materials_page(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.row_width = 2
     if is_admin(tgid=message.from_user.id):
-        keyboard.add(*["\U0001F4DD Выложить материал", "\U0001F4CB Просмотреть материалы", "\U00002b05 Назад на главную"])
+        keyboard.add(*["\U0001F4DD Г‚Г»Г«Г®Г¦ГЁГІГј Г¬Г ГІГҐГ°ГЁГ Г«", "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¬Г ГІГҐГ°ГЁГ Г«Г»", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
     else:
-        keyboard.add(*["\U0001F4CB Просмотреть материалы", "\U00002b05 Назад на главную"])
-    await message.answer("\U0001F4D2 Материалы", reply_markup=keyboard)
+        keyboard.add(*["\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¬Г ГІГҐГ°ГЁГ Г«Г»", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+    await message.answer("\U0001F4D2 ГЊГ ГІГҐГ°ГЁГ Г«Г»", reply_markup=keyboard)
 
 
-#Страница дз
+#Г‘ГІГ°Г Г­ГЁГ¶Г  Г¤Г§
 async def homeworks_page(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if is_admin(tgid=message.from_user.id):
         keyboard.row_width = 3
-        keyboard.add(*["\U0001F4DD Выложить дз", "\U0001F4CB Просмотреть загруженные дз", "\U0001F4D2 Просмотреть выполненные дз", "\U0001FAA3 Очистить загруженные дз", "\U00002b05 Назад на главную"])
+        keyboard.add(*["\U0001F4DD Г‚Г»Г«Г®Г¦ГЁГІГј Г¤Г§", "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г§Г ГЈГ°ГіГ¦ГҐГ­Г­Г»ГҐ Г¤Г§", "\U0001F4D2 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј ГўГ»ГЇГ®Г«Г­ГҐГ­Г­Г»ГҐ Г¤Г§", "\U0001FAA3 ГЋГ·ГЁГ±ГІГЁГІГј Г§Г ГЈГ°ГіГ¦ГҐГ­Г­Г»ГҐ Г¤Г§", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
     else:
         keyboard.row_width = 2
-        keyboard.add(*["\U0001F4D2 Отправить домашнее задание", "\U0001F4CB Просмотреть домашние задания", "\U00002b05 Назад на главную"])
-    await message.answer("\U0001F4CB Задания", reply_markup=keyboard)
+        keyboard.add(*["\U0001F4D2 ГЋГІГЇГ°Г ГўГЁГІГј Г¤Г®Г¬Г ГёГ­ГҐГҐ Г§Г Г¤Г Г­ГЁГҐ", "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г®Г¬Г ГёГ­ГЁГҐ Г§Г Г¤Г Г­ГЁГї", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+    await message.answer("\U0001F4CB Г‡Г Г¤Г Г­ГЁГї", reply_markup=keyboard)
 
 
-#Страница оценок и посещаемости
+#Г‘ГІГ°Г Г­ГЁГ¶Г  Г®Г¶ГҐГ­Г®ГЄ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГЁ
 async def attendance_page(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     if is_admin(tgid=message.from_user.id):
         keyboard.row_width = 2
-        keyboard.add(*["\U0001F4CA Просмотреть оценки и посещаемость", "\u269C Выставить оценку за урок", "\U00002b05 Назад на главную"])
+        keyboard.add(*["\U0001F4CA ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г®Г¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј", "\u269C Г‚Г»Г±ГІГ ГўГЁГІГј Г®Г¶ГҐГ­ГЄГі Г§Г  ГіГ°Г®ГЄ", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
     else:
-        keyboard.add(*["\U0001F4CA Просмотреть оценки и посещаемость", "\U00002b05 Назад на главную"])
-    await message.answer("\U0001F4CA Оценки и посещаемость", reply_markup=keyboard)
+        keyboard.add(*["\U0001F4CA ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г®Г¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+    await message.answer("\U0001F4CA ГЋГ¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј", reply_markup=keyboard)
 
 
-#Список материалов
+#Г‘ГЇГЁГ±Г®ГЄ Г¬Г ГІГҐГ°ГЁГ Г«Г®Гў
 async def materials_list(message: types.Message, text: str, symbol: str):
     db.execute("SELECT date FROM materialscreated;")
     materials = db.fetchall()
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add("\U00002b05 Назад к материалам")
+    keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г¬Г ГІГҐГ°ГЁГ Г«Г Г¬")
     for material in materials:
         keyboard.add(*[f"{symbol}{material[0]}"])
     await message.answer(text, reply_markup=keyboard)
 
 
-#Список дз
+#Г‘ГЇГЁГ±Г®ГЄ Г¤Г§
 async def homeworks_list(message: types.Message, text: str, symbol: str):
     db.execute("SELECT date FROM hwcreated;")
     homeworks = db.fetchall()
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add("\U00002b05 Назад к домашним заданиям")
+    keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г¤Г®Г¬Г ГёГ­ГЁГ¬ Г§Г Г¤Г Г­ГЁГїГ¬")
     for homework in homeworks:
         keyboard.add(*[f"{symbol}{homework[0]}"])
     await message.answer(text, reply_markup=keyboard)
 
 
-#Список учеников
+#Г‘ГЇГЁГ±Г®ГЄ ГіГ·ГҐГ­ГЁГЄГ®Гў
 async def students_list(message: types.Message, text: str, symbol: str):
     db.execute("SELECT surname, name, lastname FROM hwuploaded INNER JOIN waspusers ON hwuploaded.telegramid = waspusers.telegramid;")
     students = db.fetchall()
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add("\U00002b05 Назад на главную")
+    keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ")
     for student in students:
         keyboard.add(*[f"{symbol}{student[0]} {student[1]} {student[2]}"])
     await message.answer(text, reply_markup=keyboard)
 
 
-#Добавление оценки
+#Г„Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г®Г¶ГҐГ­ГЄГЁ
 async def add_mark(mark, callback_query):
     await bot.answer_callback_query(callback_query.id)
     if not is_admin(tgid=callback_query.from_user.id):
@@ -410,20 +410,20 @@ async def add_mark(mark, callback_query):
         if not users:
             add_stingers(tgid=user[0], stingers=mark)
         db.execute(f"UPDATE attendance SET mark = '{mark}' WHERE telegramid = {user[0]} and date = '{user[1]}';")
-        await bot.send_message(chat_id=user[0], text=f"\U0001F4E3 Вы получили оценку {mark} за урок {user[1]}")
+        await bot.send_message(chat_id=user[0], text=f"\U0001F4E3 Г‚Г» ГЇГ®Г«ГіГ·ГЁГ«ГЁ Г®Г¶ГҐГ­ГЄГі {mark} Г§Г  ГіГ°Г®ГЄ {user[1]}")
     if user[2] and user[3]:
         db.execute(f"SELECT * from hwuploaded WHERE telegramid = {user[2]} AND homework_date = '{user[3]}' AND mark != '-';")
         users = db.fetchall()
         if not users:
             add_stingers(tgid=user[2], stingers=mark)
         db.execute(f"UPDATE hwuploaded SET mark = '{mark}' WHERE telegramid = {user[2]} and homework_date = '{user[3]}';")
-        await bot.send_message(chat_id=user[2], text=f"\U0001F4E3 Вы получили оценку {mark} за домашнее задание от {user[3]}")
+        await bot.send_message(chat_id=user[2], text=f"\U0001F4E3 Г‚Г» ГЇГ®Г«ГіГ·ГЁГ«ГЁ Г®Г¶ГҐГ­ГЄГі {mark} Г§Г  Г¤Г®Г¬Г ГёГ­ГҐГҐ Г§Г Г¤Г Г­ГЁГҐ Г®ГІ {user[3]}")
     if user[0] and user[1] or user[2] and user[3]:
         db.execute(f"UPDATE waspadmins SET checking_marks_student = NULL, setting_mark_date = NULL, checking_homework_student = NULL, checking_homework_date = NULL WHERE telegramid = {callback_query.from_user.id};")
-        await callback_query.message.answer("\U0001F4E3 Оценка выставлена.")
+        await callback_query.message.answer("\U0001F4E3 ГЋГ¶ГҐГ­ГЄГ  ГўГ»Г±ГІГ ГўГ«ГҐГ­Г .")
 
 
-#Клавиатура оценок, встроенная в сообщение
+#ГЉГ«Г ГўГЁГ ГІГіГ°Г  Г®Г¶ГҐГ­Г®ГЄ, ГўГ±ГІГ°Г®ГҐГ­Г­Г Гї Гў Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐ
 def inline_marks():
     button0 = InlineKeyboardButton(text="\U0001F41D 0", callback_data="button0")
     button1 = InlineKeyboardButton(text="\U0001F41D 1", callback_data="button1")
@@ -435,7 +435,7 @@ def inline_marks():
     return keyboard
 
 
-#Обработка inline-кнопок
+#ГЋГЎГ°Г ГЎГ®ГІГЄГ  inline-ГЄГ­Г®ГЇГ®ГЄ
 @dp.callback_query_handler(lambda c: c.data == 'button0')
 async def button0(callback_query: types.CallbackQuery):
     await add_mark(0, callback_query)
@@ -472,23 +472,23 @@ async def button5(callback_query: types.CallbackQuery):
     return
 
 
-#Обработка нажатия кнопок
+#ГЋГЎГ°Г ГЎГ®ГІГЄГ  Г­Г Г¦Г ГІГЁГї ГЄГ­Г®ГЇГ®ГЄ
 @dp.message_handler(content_types=types.ContentType.ANY)
 async def on_message(message: types.Message):
     if is_removed(tgid=message.from_user.id):
-        await message.answer(str(message.from_user.full_name) + ", вы были исключены из курса. \nОбратитесь к организатору.")
+        await message.answer(str(message.from_user.full_name) + ", ГўГ» ГЎГ»Г«ГЁ ГЁГ±ГЄГ«ГѕГ·ГҐГ­Г» ГЁГ§ ГЄГіГ°Г±Г . \nГЋГЎГ°Г ГІГЁГІГҐГ±Гј ГЄ Г®Г°ГЈГ Г­ГЁГ§Г ГІГ®Г°Гі.")
         return
     if not is_user(message.from_user.id) and not is_admin(tgid=message.from_user.id):
         msg = message.text.split(" ")
         if len(msg) != 3:
-            await message.answer("Добрый день, для регистрации напишите ваши ФИО.")
+            await message.answer("Г„Г®ГЎГ°Г»Г© Г¤ГҐГ­Гј, Г¤Г«Гї Г°ГҐГЈГЁГ±ГІГ°Г Г¶ГЁГЁ Г­Г ГЇГЁГёГЁГІГҐ ГўГ ГёГЁ Г”Г€ГЋ.")
             return
         surname = msg[1]
         name = msg[0]
         lastname = msg[2]
         tgreg_user(message.from_user.id, message.from_user.username, name, surname, lastname)
         await homepage(message)
-    if message.text == "\U00002b05 Отмена":
+    if message.text == "\U00002b05 ГЋГІГ¬ГҐГ­Г ":
         if sending_homework(message.from_user.id):
             db.execute(f"DELETE FROM hwuploaded WHERE telegramid = {message.from_user.id} AND upload_date ISNULL;")
             db.execute(f"UPDATE waspusers SET sending_homework = FALSE WHERE telegramid = {message.from_user.id};")
@@ -509,33 +509,33 @@ async def on_message(message: types.Message):
             db.execute(f"UPDATE waspadmins SET announcing = FALSE WHERE telegramid = {message.from_user.id};")
             await homepage(message)
         return
-    if message.text == "\U0001F3EE Назначить организатора":
+    if message.text == "\U0001F3EE ГЌГ Г§Г­Г Г·ГЁГІГј Г®Г°ГЈГ Г­ГЁГ§Г ГІГ®Г°Г ":
         if not is_admin(tgid=message.from_user.id):
             return
-        await message.answer("Напишите telegram-ник зарегистрированного участника")
+        await message.answer("ГЌГ ГЇГЁГёГЁГІГҐ telegram-Г­ГЁГЄ Г§Г Г°ГҐГЈГЁГ±ГІГ°ГЁГ°Г®ГўГ Г­Г­Г®ГЈГ® ГіГ·Г Г±ГІГ­ГЁГЄГ ")
         db.execute(f"UPDATE waspadmins SET setting_admin = TRUE WHERE telegramid = {message.from_user.id};")
         return
-    if message.text == "\U00002b05 Назад к оценкам и посещаемости":
+    if message.text == "\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г®Г¶ГҐГ­ГЄГ Г¬ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГЁ":
         await attendance_page(message)
         return
-    if message.text == "\U00002b05 Назад к материалам":
+    if message.text == "\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г¬Г ГІГҐГ°ГЁГ Г«Г Г¬":
         if is_admin(tgid=message.from_user.id):
             db.execute(f"UPDATE waspadmins SET checking_homework_date = NULL, checking_homework_student = NULL, checking_marks_student = NULL, setting_mark_date = NULL;")
         await materials_list(message)
         return
-    if message.text == "\U00002b05 Назад к домашним заданиям":
+    if message.text == "\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г¤Г®Г¬Г ГёГ­ГЁГ¬ Г§Г Г¤Г Г­ГЁГїГ¬":
         if is_admin(tgid=message.from_user.id):
             db.execute(f"UPDATE waspadmins SET checking_homework_date = NULL, checking_homework_student = NULL, checking_marks_student = NULL, setting_mark_date = NULL;")
         await homeworks_page(message)
         return
-    if message.text == "\U00002b05 Назад на главную":
+    if message.text == "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ":
         if is_admin(tgid=message.from_user.id):
             db.execute(f"UPDATE waspadmins SET checking_homework_date = NULL, checking_homework_student = NULL, checking_marks_student = NULL, setting_mark_date = NULL;")
         await homepage(message)
         return
     if creating_material(message.from_user.id):
         if not message.text and not message.photo and not message.document:
-            await message.answer("\U0001F53A Отправьте Текст/Фото/Файл")
+            await message.answer("\U0001F53A ГЋГІГЇГ°Г ГўГјГІГҐ Г’ГҐГЄГ±ГІ/Г”Г®ГІГ®/Г”Г Г©Г«")
             return
         date_sent = datetime.now().strftime("%d/%m/%Y")
         time_sent = datetime.now().strftime("%H:%M")
@@ -562,15 +562,15 @@ async def on_message(message: types.Message):
                     f.write(message.caption)
                 db.execute(f"UPDATE materialscreated SET text_filename = '{text_file_name}' WHERE telegramid = {message.from_user.id};")
             db.execute(f"UPDATE waspadmins SET creating_material = FALSE WHERE telegramid = {message.from_user.id};")
-            await message.answer("\U0001F53A Материал выложен.")
+            await message.answer("\U0001F53A ГЊГ ГІГҐГ°ГЁГ Г« ГўГ»Г«Г®Г¦ГҐГ­.")
             await overall_materials_page(message)
             db.execute(f"SELECT name, surname, lastname FROM waspadmins WHERE telegramid = {message.from_user.id};")
             return
         except:
-            await message.answer("\u2757 Не удалось отправить файл. Попробуйте ещё раз.")
+            await message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®ГІГЇГ°Г ГўГЁГІГј ГґГ Г©Г«. ГЏГ®ГЇГ°Г®ГЎГіГ©ГІГҐ ГҐГ№Вё Г°Г Г§.")
     if creating_homework(message.from_user.id):
         if not message.text and not message.photo and not message.document:
-            await message.answer("\U0001F53A Отправьте Текст/Фото/Файл")
+            await message.answer("\U0001F53A ГЋГІГЇГ°Г ГўГјГІГҐ Г’ГҐГЄГ±ГІ/Г”Г®ГІГ®/Г”Г Г©Г«")
             return
         date_sent = datetime.now().strftime("%d/%m/%Y")
         time_sent = datetime.now().strftime("%H:%M")
@@ -597,15 +597,15 @@ async def on_message(message: types.Message):
                     f.write(message.caption)
                 db.execute(f"UPDATE hwcreated SET text_filename = '{text_file_name}' WHERE telegramid = {message.from_user.id};")
             db.execute(f"UPDATE waspadmins SET creating_homework = FALSE WHERE telegramid = {message.from_user.id};")
-            await message.answer("\U0001F53A Дз выложено.")
+            await message.answer("\U0001F53A Г„Г§ ГўГ»Г«Г®Г¦ГҐГ­Г®.")
             await overall_materials_page(message)
             db.execute(f"SELECT name, surname, lastname FROM waspadmins WHERE telegramid = {message.from_user.id};")
             return
         except:
-            await message.answer("\u2757 Не удалось отправить файл. Попробуйте ещё раз.")
+            await message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®ГІГЇГ°Г ГўГЁГІГј ГґГ Г©Г«. ГЏГ®ГЇГ°Г®ГЎГіГ©ГІГҐ ГҐГ№Вё Г°Г Г§.")
     if sending_homework(message.from_user.id):
         if not message.text and not message.photo and not message.document:
-            await message.answer("\U0001F53A Отправьте Текст/Фото/Файл")
+            await message.answer("\U0001F53A ГЋГІГЇГ°Г ГўГјГІГҐ Г’ГҐГЄГ±ГІ/Г”Г®ГІГ®/Г”Г Г©Г«")
             return
         date_sent = datetime.now().strftime("%d/%m/%Y")
         time_sent = datetime.now().strftime("%H:%M")
@@ -639,9 +639,9 @@ async def on_message(message: types.Message):
                 f.write(message.caption)
             db.execute(f"UPDATE hwuploaded SET text_filename = '{text_file_name}' WHERE telegramid = {message.from_user.id};")
         db.execute(f"UPDATE waspusers SET sending_homework = FALSE WHERE telegramid = {message.from_user.id};")
-        await message.answer("\U0001F53A Дз отправлено.")
+        await message.answer("\U0001F53A Г„Г§ Г®ГІГЇГ°Г ГўГ«ГҐГ­Г®.")
         await overall_materials_page(message)
-        print(f'{user_fullname} отправил дз {str(date_sent)} в {str(time_sent)}')
+        print(f'{user_fullname} Г®ГІГЇГ°Г ГўГЁГ« Г¤Г§ {str(date_sent)} Гў {str(time_sent)}')
         return
     if finding_user(message.from_user.id):
         msg = message.text.split(' ')
@@ -649,22 +649,22 @@ async def on_message(message: types.Message):
             surname = msg[0]
             name = msg[1]
         except:
-            await message.answer("\U0001F464 Введите фамилию и имя")
+            await message.answer("\U0001F464 Г‚ГўГҐГ¤ГЁГІГҐ ГґГ Г¬ГЁГ«ГЁГѕ ГЁ ГЁГ¬Гї")
             return
         db.execute(f"SELECT telegramid FROM waspusers WHERE name = '{name}' AND surname = '{surname}';")
         users = db.fetchall()
         db.execute(f"UPDATE waspadmins SET finding_user = FALSE WHERE telegramid = {message.from_user.id};")
         if not users:
-            await message.answer(f"{surname} {name} не зарегистрирован на курсе.")
+            await message.answer(f"{surname} {name} Г­ГҐ Г§Г Г°ГҐГЈГЁГ±ГІГ°ГЁГ°Г®ГўГ Г­ Г­Г  ГЄГіГ°Г±ГҐ.")
             return
         for user in users:
             db.execute(f"SELECT surname, name, lastname, telegramname, discordid FROM waspusers WHERE telegramid = '{user[0]}';")
             data = db.fetchone()
             if data[4]:
-                discord_link = "\u2705 Discord привязан"
+                discord_link = "\u2705 Discord ГЇГ°ГЁГўГїГ§Г Г­"
             else:
-                discord_link = "\u274C Discord не привязан"
-            await message.answer(f'ФИО: {data[0]} {data[1]} {data[2]}\nТелеграм – @{data[3]}\n{discord_link}')
+                discord_link = "\u274C Discord Г­ГҐ ГЇГ°ГЁГўГїГ§Г Г­"
+            await message.answer(f'Г”Г€ГЋ: {data[0]} {data[1]} {data[2]}\nГ’ГҐГ«ГҐГЈГ°Г Г¬ В– @{data[3]}\n{discord_link}')
         await students_page(message)
         return
     if removing_user(message.from_user.id):
@@ -672,19 +672,19 @@ async def on_message(message: types.Message):
         msg = str(message.text)
         telegramname = msg.replace('@', '')
         if not is_user(tgname=telegramname):
-            await message.answer(f"@{telegramname} не зарегистрирован на курсе.")
+            await message.answer(f"@{telegramname} Г­ГҐ Г§Г Г°ГҐГЈГЁГ±ГІГ°ГЁГ°Г®ГўГ Г­ Г­Г  ГЄГіГ°Г±ГҐ.")
             return
         db.execute(f"SELECT telegramid FROM waspusers WHERE telegramname = '{telegramname}';")
         user = db.fetchone()
         user_id = user[0]
         if is_admin(tgid=user_id):
-            await message.answer("Вы не можете исключить организатора.")
+            await message.answer("Г‚Г» Г­ГҐ Г¬Г®Г¦ГҐГІГҐ ГЁГ±ГЄГ«ГѕГ·ГЁГІГј Г®Г°ГЈГ Г­ГЁГ§Г ГІГ®Г°Г .")
             db.execute(f"UPDATE waspadmins SET removing_user = FALSE WHERE telegramid = {message.from_user.id};")
             await students_page(message)
             return
         db.execute(f"DELETE FROM waspusers WHERE telegramname = '{telegramname}';")
         db.execute(f"INSERT INTO removedusers(telegramid, telegramname) VALUES({user_id}, '{telegramname}');")
-        await message.answer(f"Участник @{telegramname} исключён из курса.")
+        await message.answer(f"Г“Г·Г Г±ГІГ­ГЁГЄ @{telegramname} ГЁГ±ГЄГ«ГѕГ·ВёГ­ ГЁГ§ ГЄГіГ°Г±Г .")
         return
     if announcing(message.from_user.id):
         db.execute(f"UPDATE waspadmins SET announcing = FALSE WHERE telegramid = {message.from_user.id};")
@@ -692,10 +692,10 @@ async def on_message(message: types.Message):
         db.execute(f"SELECT name, surname, lastname FROM waspadmins WHERE telegramid = {message.from_user.id};")
         user_fullname = " ".join(db.fetchone())
         for user in users:
-            await bot.send_message(chat_id=user[0], text=f"{user_fullname} отправил объявление:")
+            await bot.send_message(chat_id=user[0], text=f"{user_fullname} Г®ГІГЇГ°Г ГўГЁГ« Г®ГЎГєГїГўГ«ГҐГ­ГЁГҐ:")
             await bot.send_message(chat_id=user[0], text=message.text)
         await homepage(message)
-        await message.answer("Рассылка отправлена ученикам.")
+        await message.answer("ГђГ Г±Г±Г»Г«ГЄГ  Г®ГІГЇГ°Г ГўГ«ГҐГ­Г  ГіГ·ГҐГ­ГЁГЄГ Г¬.")
         return
     if setting_admin(message.from_user.id):
         db.execute(f"UPDATE waspadmins SET setting_admin = FALSE WHERE telegramid = {message.from_user.id};")
@@ -703,28 +703,28 @@ async def on_message(message: types.Message):
         db.execute(f"SELECT * FROM waspusers WHERE telegramname = '{telegramname}';")
         data = db.fetchone()
         if not data:
-            await message.answer("Участник с таким ником не зарегистрирован.")
+            await message.answer("Г“Г·Г Г±ГІГ­ГЁГЄ Г± ГІГ ГЄГЁГ¬ Г­ГЁГЄГ®Г¬ Г­ГҐ Г§Г Г°ГҐГЈГЁГ±ГІГ°ГЁГ°Г®ГўГ Г­.")
             return
         db.execute(f"DELETE FROM waspusers WHERE telegramname = '{telegramname}';")
         tgreg_admin(data[1], telegramname, data[2], data[3], data[4])
-        await bot.send_message(data[1], "\U0001F4E3 Вы получили права администратора.")
-        await message.answer(f"@{telegramname} назначен организатором.")
+        await bot.send_message(data[1], "\U0001F4E3 Г‚Г» ГЇГ®Г«ГіГ·ГЁГ«ГЁ ГЇГ°Г ГўГ  Г Г¤Г¬ГЁГ­ГЁГ±ГІГ°Г ГІГ®Г°Г .")
+        await message.answer(f"@{telegramname} Г­Г Г§Г­Г Г·ГҐГ­ Г®Г°ГЈГ Г­ГЁГ§Г ГІГ®Г°Г®Г¬.")
         return
-    if message.text == "\U0001F41D Профиль":
+    if message.text == "\U0001F41D ГЏГ°Г®ГґГЁГ«Гј":
         if not is_user(message.from_user.id):
             return
         db.execute(f"SELECT surname, name, lastname, stingers, discordid FROM waspusers WHERE telegramid = {message.from_user.id};")
         data = db.fetchone()
         if data[4]:
-            discord_link = "\u2705 Discord привязан"
+            discord_link = "\u2705 Discord ГЇГ°ГЁГўГїГ§Г Г­"
         else:
-            discord_link = "\u274C Discord не привязан"
-        if str(data[3])[-1] == '1': #Проверка количества стингеров
-            amount_name = "стингер"
+            discord_link = "\u274C Discord Г­ГҐ ГЇГ°ГЁГўГїГ§Г Г­"
+        if str(data[3])[-1] == '1': #ГЏГ°Г®ГўГҐГ°ГЄГ  ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ  Г±ГІГЁГ­ГЈГҐГ°Г®Гў
+            amount_name = "Г±ГІГЁГ­ГЈГҐГ°"
         elif str(data[3])[-1] == '2' or str(data[3])[-1] == '3' or str(data[3])[-1] == '4':
-            amount_name = "стингера"
+            amount_name = "Г±ГІГЁГ­ГЈГҐГ°Г "
         else:
-            amount_name = "стингеров"
+            amount_name = "Г±ГІГЁГ­ГЈГҐГ°Г®Гў"
         try:
             if data[3] < 10:
                 photo = open('waspcoin.png', 'rb')
@@ -740,43 +740,43 @@ async def on_message(message: types.Message):
         except:
             await message.answer(text=f"\U0001F464 {data[0]} {data[1]} {data[2]}\n\n{discord_link}\n\U0001F41D {data[3]} {amount_name}")
         return
-    if message.text == "\U0001F4CA Оценки и посещаемость":
+    if message.text == "\U0001F4CA ГЋГ¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј":
         await attendance_page(message)
         return
-    if message.text == "\U0001FAA3 Очистить выполненные дз":
+    if message.text == "\U0001FAA3 ГЋГ·ГЁГ±ГІГЁГІГј ГўГ»ГЇГ®Г«Г­ГҐГ­Г­Г»ГҐ Г¤Г§":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add("\U00002b05 Назад к домашним заданиям", "\u2705 Очистить")
-        await message.answer("Вы уверены, что хотите очистить все выполненные домашние задания?", reply_markup=keyboard)
+        keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г¤Г®Г¬Г ГёГ­ГЁГ¬ Г§Г Г¤Г Г­ГЁГїГ¬", "\u2705 ГЋГ·ГЁГ±ГІГЁГІГј")
+        await message.answer("Г‚Г» ГіГўГҐГ°ГҐГ­Г», Г·ГІГ® ГµГ®ГІГЁГІГҐ Г®Г·ГЁГ±ГІГЁГІГј ГўГ±ГҐ ГўГ»ГЇГ®Г«Г­ГҐГ­Г­Г»ГҐ Г¤Г®Г¬Г ГёГ­ГЁГҐ Г§Г Г¤Г Г­ГЁГї?", reply_markup=keyboard)
         return
-    if message.text == "\u2705 Очистить":
+    if message.text == "\u2705 ГЋГ·ГЁГ±ГІГЁГІГј":
         if not is_admin(tgid=message.from_user.id):
             return
         try:
             shutil.rmtree(f"homeworks/")
             os.mkdir("homeworks")
             db.execute(f"DELETE FROM hwuploaded;")
-            await message.answer("\u2705 Загруженные дз очищены.")
+            await message.answer("\u2705 Г‡Г ГЈГ°ГіГ¦ГҐГ­Г­Г»ГҐ Г¤Г§ Г®Г·ГЁГ№ГҐГ­Г».")
         except:
-            await message.answer("\u2757 Не удалось очистить папку с дз.")
+            await message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®Г·ГЁГ±ГІГЁГІГј ГЇГ ГЇГЄГі Г± Г¤Г§.")
         await homeworks_page(message)
         return
-    if message.text == "\U0001F4CA Просмотреть оценки и посещаемость":
+    if message.text == "\U0001F4CA ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г®Г¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј":
         if is_admin(tgid=message.from_user.id):
             db.execute("SELECT surname, name, lastname FROM waspusers;")
             students = db.fetchall()
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            keyboard.add("\U00002b05 Назад на главную")
+            keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ")
             for student in students:
                 keyboard.add(*[f"\U0001F300 {student[0]} {student[1]} {student[2]}"])
-            await message.answer("\U0001F4D2 Выберите ученика", reply_markup=keyboard)
+            await message.answer("\U0001F4D2 Г‚Г»ГЎГҐГ°ГЁГІГҐ ГіГ·ГҐГ­ГЁГЄГ ", reply_markup=keyboard)
             return
         else:
             db.execute(f"SELECT date, mark, attendance_time, attendance FROM attendance WHERE telegramid = '{message.from_user.id}';")
             data = db.fetchall()
             if not data:
-                await message.answer(f"\u2757 Вы ещё не посещали занятия.")
+                await message.answer(f"\u2757 Г‚Г» ГҐГ№Вё Г­ГҐ ГЇГ®Г±ГҐГ№Г Г«ГЁ Г§Г Г­ГїГІГЁГї.")
                 return
             dates = []
             marks = []
@@ -792,12 +792,12 @@ async def on_message(message: types.Message):
                 if percentage >= 70:
                     check = "\u2705"
                 attendance.append(f"{datum[3]} {check}")
-            loading_message = await message.answer("\U0001F551 Загрузка...")
+            loading_message = await message.answer("\U0001F551 Г‡Г ГЈГ°ГіГ§ГЄГ ...")
             df = pandas.DataFrame()
-            df['Дата'] = dates
-            df['Оценка'] = marks
-            df['Время на уроке'] = attendance_time
-            df['Посещаемость'] = attendance
+            df['Г„Г ГІГ '] = dates
+            df['ГЋГ¶ГҐГ­ГЄГ '] = marks
+            df['Г‚Г°ГҐГ¬Гї Г­Г  ГіГ°Г®ГЄГҐ'] = attendance_time
+            df['ГЏГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј'] = attendance
             fig = ff.create_table(df)
             fig.update_layout(
                 autosize=False,
@@ -806,12 +806,12 @@ async def on_message(message: types.Message):
             )
             try:
                 fig.write_image("student_grades.png", scale=2)
-                await bot.send_photo(chat_id=message.from_user.id, photo=open('student_grades.png', 'rb'), caption=f"Оценки и посещаемость")
+                await bot.send_photo(chat_id=message.from_user.id, photo=open('student_grades.png', 'rb'), caption=f"ГЋГ¶ГҐГ­ГЄГЁ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј")
                 os.remove("student_grades.png")
                 await loading_message.delete()
                 return
             except:
-                message.answer("\u2757 Не удалось отправить изображение таблицы.")
+                message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®ГІГЇГ°Г ГўГЁГІГј ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ ГІГ ГЎГ«ГЁГ¶Г».")
     if message.text and "\U0001F300 " in message.text:
         if not is_admin(tgid=message.from_user.id):
             return
@@ -819,7 +819,7 @@ async def on_message(message: types.Message):
         db.execute(f"SELECT date, mark, attendance_time, attendance FROM attendance WHERE fullname = '{fullname}';")
         data = db.fetchall()
         if not data:
-            await message.answer(f"\u2757 {fullname} ещё не посещал занятия.")
+            await message.answer(f"\u2757 {fullname} ГҐГ№Вё Г­ГҐ ГЇГ®Г±ГҐГ№Г Г« Г§Г Г­ГїГІГЁГї.")
             return
         dates = []
         marks = []
@@ -835,12 +835,12 @@ async def on_message(message: types.Message):
             if percentage >= 70:
                 check = "\u2705"
             attendance.append(f"{datum[3]} {check}")
-        loading_message = await message.answer("\U0001F551 Загрузка...")
+        loading_message = await message.answer("\U0001F551 Г‡Г ГЈГ°ГіГ§ГЄГ ...")
         df = pandas.DataFrame()
-        df['Дата'] = dates
-        df['Оценка'] = marks
-        df['Время на уроке'] = attendance_time
-        df['Посещаемость'] = attendance
+        df['Г„Г ГІГ '] = dates
+        df['ГЋГ¶ГҐГ­ГЄГ '] = marks
+        df['Г‚Г°ГҐГ¬Гї Г­Г  ГіГ°Г®ГЄГҐ'] = attendance_time
+        df['ГЏГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГј'] = attendance
         fig = ff.create_table(df)
         fig.update_layout(
             autosize=False,
@@ -849,91 +849,91 @@ async def on_message(message: types.Message):
         )
         try:
             fig.write_image("grades.png", scale=2)
-            await bot.send_photo(chat_id=message.from_user.id, photo=open('grades.png', 'rb'), caption=f"Оценки {fullname}")
+            await bot.send_photo(chat_id=message.from_user.id, photo=open('grades.png', 'rb'), caption=f"ГЋГ¶ГҐГ­ГЄГЁ {fullname}")
             os.remove("grades.png")
             await loading_message.delete()
         except:
-            message.answer("\u2757 Не удалось отправить изображение таблицы.")
+            message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г®ГІГЇГ°Г ГўГЁГІГј ГЁГ§Г®ГЎГ°Г Г¦ГҐГ­ГЁГҐ ГІГ ГЎГ«ГЁГ¶Г».")
         return
-    if message.text == "\u269C Выставить оценку за урок":
+    if message.text == "\u269C Г‚Г»Г±ГІГ ГўГЁГІГј Г®Г¶ГҐГ­ГЄГі Г§Г  ГіГ°Г®ГЄ":
         if not is_admin(tgid=message.from_user.id):
             return
         db.execute("SELECT surname, name, lastname FROM waspusers;")
         students = db.fetchall()
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add("\U00002b05 Назад на главную")
+        keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ")
         for student in students:
             keyboard.add(*[f"\U0001F4AE{student[0]} {student[1]} {student[2]}"])
-        await message.answer("\U0001F4D2 Выберите ученика", reply_markup=keyboard)
+        await message.answer("\U0001F4D2 Г‚Г»ГЎГҐГ°ГЁГІГҐ ГіГ·ГҐГ­ГЁГЄГ ", reply_markup=keyboard)
         return
     if message.text and "\u2668 " in message.text:
         if not is_admin(tgid=message.from_user.id):
             return
         date = message.text.replace("\u2668 ", "")
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
         db.execute(f"UPDATE waspadmins SET setting_mark_date = '{date}' WHERE telegramid = {message.from_user.id};")
         keyboard = inline_marks()
-        await message.answer(f"Оценка за урок {date}", reply_markup=keyboard)
+        await message.answer(f"ГЋГ¶ГҐГ­ГЄГ  Г§Г  ГіГ°Г®ГЄ {date}", reply_markup=keyboard)
         return
-    if message.text == "\U0001F9CD Ученики":
+    if message.text == "\U0001F9CD Г“Г·ГҐГ­ГЁГЄГЁ":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.row_width = 2
-        keyboard.add(*["\U0001F9FE Список участников", "\U0001F50E Найти участника", "\U0001F6AB Исключить участника"])
-        keyboard.add("\U00002b05 Назад на главную")
-        await message.answer("Информация об участниках курса", reply_markup=keyboard)
+        keyboard.add(*["\U0001F9FE Г‘ГЇГЁГ±Г®ГЄ ГіГ·Г Г±ГІГ­ГЁГЄГ®Гў", "\U0001F50E ГЌГ Г©ГІГЁ ГіГ·Г Г±ГІГ­ГЁГЄГ ", "\U0001F6AB Г€Г±ГЄГ«ГѕГ·ГЁГІГј ГіГ·Г Г±ГІГ­ГЁГЄГ "])
+        keyboard.add("\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ")
+        await message.answer("Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї Г®ГЎ ГіГ·Г Г±ГІГ­ГЁГЄГ Гµ ГЄГіГ°Г±Г ", reply_markup=keyboard)
         return
-    if message.text == "\U0001F9FE Список участников":
+    if message.text == "\U0001F9FE Г‘ГЇГЁГ±Г®ГЄ ГіГ·Г Г±ГІГ­ГЁГЄГ®Гў":
         if not is_admin(tgid=message.from_user.id):
-            await message.answer("У вас недостаточно прав.")
+            await message.answer("Г“ ГўГ Г± Г­ГҐГ¤Г®Г±ГІГ ГІГ®Г·Г­Г® ГЇГ°Г Гў.")
             return
         db.execute(f"SELECT surname, name, lastname, telegramname FROM waspusers;")
         users = db.fetchall()
-        userslist = "Список учеников:"
+        userslist = "Г‘ГЇГЁГ±Г®ГЄ ГіГ·ГҐГ­ГЁГЄГ®Гў:"
         user_num = 1
         for user in users:
-            userslist += f"\n{user_num}. {user[0]} {user[1]} {user[2]} | Telegram – @{user[3]}"
+            userslist += f"\n{user_num}. {user[0]} {user[1]} {user[2]} | Telegram В– @{user[3]}"
             user_num += 1
         await message.answer(userslist)
         return
-    if message.text == "\U0001F50E Найти участника":
+    if message.text == "\U0001F50E ГЌГ Г©ГІГЁ ГіГ·Г Г±ГІГ­ГЁГЄГ ":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
-        await message.answer("\U0001F464 Введите фамилию и имя участника", reply_markup=keyboard)
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
+        await message.answer("\U0001F464 Г‚ГўГҐГ¤ГЁГІГҐ ГґГ Г¬ГЁГ«ГЁГѕ ГЁ ГЁГ¬Гї ГіГ·Г Г±ГІГ­ГЁГЄГ ", reply_markup=keyboard)
         db.execute(f"UPDATE waspadmins SET finding_user = TRUE WHERE telegramid = {message.from_user.id};")
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
         return
-    if message.text == "\U0001F6AB Исключить участника":
+    if message.text == "\U0001F6AB Г€Г±ГЄГ«ГѕГ·ГЁГІГј ГіГ·Г Г±ГІГ­ГЁГЄГ ":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
-        await message.answer("Введите Telegram ник участника, которого хотите исключить.", reply_markup=keyboard)
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
+        await message.answer("Г‚ГўГҐГ¤ГЁГІГҐ Telegram Г­ГЁГЄ ГіГ·Г Г±ГІГ­ГЁГЄГ , ГЄГ®ГІГ®Г°Г®ГЈГ® ГµГ®ГІГЁГІГҐ ГЁГ±ГЄГ«ГѕГ·ГЁГІГј.", reply_markup=keyboard)
         db.execute(f"UPDATE waspadmins SET removing_user = TRUE WHERE telegramid = {message.from_user.id};")
         return
-    if message.text == "\U0001F4DA Материалы текущего модуля":
+    if message.text == "\U0001F4DA ГЊГ ГІГҐГ°ГЁГ Г«Г» ГІГҐГЄГіГ№ГҐГЈГ® Г¬Г®Г¤ГіГ«Гї":
         await overall_materials_page(message)
         return
-    if message.text == "\U0001F4D2 Материалы":
+    if message.text == "\U0001F4D2 ГЊГ ГІГҐГ°ГЁГ Г«Г»":
         await materials_page(message)
         return
-    if message.text == "\U0001F4DD Выложить материал":
+    if message.text == "\U0001F4DD Г‚Г»Г«Г®Г¦ГЁГІГј Г¬Г ГІГҐГ°ГЁГ Г«":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
         db.execute(f"UPDATE waspadmins SET creating_material = TRUE WHERE telegramid = {message.from_user.id};")
-        await message.answer("\U0001F53A Выложите материал (Текст/Фото/Файл)", reply_markup=keyboard)
+        await message.answer("\U0001F53A Г‚Г»Г«Г®Г¦ГЁГІГҐ Г¬Г ГІГҐГ°ГЁГ Г« (Г’ГҐГЄГ±ГІ/Г”Г®ГІГ®/Г”Г Г©Г«)", reply_markup=keyboard)
         return
-    if message.text == "\U0001F4CB Задания":
+    if message.text == "\U0001F4CB Г‡Г Г¤Г Г­ГЁГї":
         await homeworks_page(message)
         return
-    if message.text == "\U0001F515 Отменить отправку":
+    if message.text == "\U0001F515 ГЋГІГ¬ГҐГ­ГЁГІГј Г®ГІГЇГ°Г ГўГЄГі":
         db.execute(f"SELECT telegramid, surname, name, lastname, checked_homework_date FROM waspusers WHERE telegramid = {message.from_user.id};")
         user = db.fetchone()
         if user:
@@ -944,56 +944,56 @@ async def on_message(message: types.Message):
             db.execute(f"UPDATE waspusers SET checked_homework_date = NULL WHERE telegramid = {message.from_user.id};")
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             keyboard.row_width = 2
-            keyboard.add(*["\U0001F4D2 Отправить домашнее задание", "\U0001F4CB Просмотреть домашние задания", "\U00002b05 Назад на главную"])
-            await message.answer("Отправка дз отменена.", reply_markup=keyboard)
+            keyboard.add(*["\U0001F4D2 ГЋГІГЇГ°Г ГўГЁГІГј Г¤Г®Г¬Г ГёГ­ГҐГҐ Г§Г Г¤Г Г­ГЁГҐ", "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г®Г¬Г ГёГ­ГЁГҐ Г§Г Г¤Г Г­ГЁГї", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+            await message.answer("ГЋГІГЇГ°Г ГўГЄГ  Г¤Г§ Г®ГІГ¬ГҐГ­ГҐГ­Г .", reply_markup=keyboard)
             return
-    if message.text == "\U0001F4DD Выложить дз":
+    if message.text == "\U0001F4DD Г‚Г»Г«Г®Г¦ГЁГІГј Г¤Г§":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
         db.execute(f"UPDATE waspadmins SET creating_homework = TRUE WHERE telegramid = {message.from_user.id};")
-        await message.answer("\U0001F53A Выложите дз (Текст/Фото/Файл)", reply_markup=keyboard)
+        await message.answer("\U0001F53A Г‚Г»Г«Г®Г¦ГЁГІГҐ Г¤Г§ (Г’ГҐГЄГ±ГІ/Г”Г®ГІГ®/Г”Г Г©Г«)", reply_markup=keyboard)
         return
-    if message.text == "\U0001F4D2 Отправить домашнее задание":
-        await homeworks_list(message, "Выберите, дз за какую дату вы хотите отправить", "\U00002620")
+    if message.text == "\U0001F4D2 ГЋГІГЇГ°Г ГўГЁГІГј Г¤Г®Г¬Г ГёГ­ГҐГҐ Г§Г Г¤Г Г­ГЁГҐ":
+        await homeworks_list(message, "Г‚Г»ГЎГҐГ°ГЁГІГҐ, Г¤Г§ Г§Г  ГЄГ ГЄГіГѕ Г¤Г ГІГі ГўГ» ГµГ®ГІГЁГІГҐ Г®ГІГЇГ°Г ГўГЁГІГј", "\U00002620")
         return
-    if message.text == "\U0001F4E2 Сделать объявление":
+    if message.text == "\U0001F4E2 Г‘Г¤ГҐГ«Г ГІГј Г®ГЎГєГїГўГ«ГҐГ­ГЁГҐ":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
-        await message.answer("\U0001F53A Напишите текст объявления.", reply_markup=keyboard)
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
+        await message.answer("\U0001F53A ГЌГ ГЇГЁГёГЁГІГҐ ГІГҐГЄГ±ГІ Г®ГЎГєГїГўГ«ГҐГ­ГЁГї.", reply_markup=keyboard)
         db.execute(f"UPDATE waspadmins SET announcing = TRUE WHERE telegramid = {message.from_user.id};")
         return
-    if message.text == "\U0001F4CB Просмотреть материалы":
-        await materials_list(message, "\U0001F4D2 Материалы", "\u267B")
+    if message.text == "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¬Г ГІГҐГ°ГЁГ Г«Г»":
+        await materials_list(message, "\U0001F4D2 ГЊГ ГІГҐГ°ГЁГ Г«Г»", "\u267B")
         return
-    if message.text == "\U0001F4CB Просмотреть домашние задания" or message.text == "\U0001F4CB Просмотреть загруженные дз":
-        await homeworks_list(message, "\U0001F4CB Домашние задания", "\U0001F5C2")
+    if message.text == "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г®Г¬Г ГёГ­ГЁГҐ Г§Г Г¤Г Г­ГЁГї" or message.text == "\U0001F4CB ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г§Г ГЈГ°ГіГ¦ГҐГ­Г­Г»ГҐ Г¤Г§":
+        await homeworks_list(message, "\U0001F4CB Г„Г®Г¬Г ГёГ­ГЁГҐ Г§Г Г¤Г Г­ГЁГї", "\U0001F5C2")
         return
-    if message.text == "\U0001F4D2 Просмотреть выполненные дз":
+    if message.text == "\U0001F4D2 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј ГўГ»ГЇГ®Г«Г­ГҐГ­Г­Г»ГҐ Г¤Г§":
         if not is_admin(tgid=message.from_user.id):
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.row_width = 2
-        keyboard.add(*["\U0001F5D3 Просмотреть дз по датам", "\U0001F464 Просмотреть дз по ученикам", "\U00002b05 Назад на главную"])
-        await message.answer("\U0001F4D2 Просмотреть дз", reply_markup=keyboard)
+        keyboard.add(*["\U0001F5D3 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§ ГЇГ® Г¤Г ГІГ Г¬", "\U0001F464 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§ ГЇГ® ГіГ·ГҐГ­ГЁГЄГ Г¬", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+        await message.answer("\U0001F4D2 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§", reply_markup=keyboard)
         return
-    if message.text == "\U0001F5D3 Просмотреть дз по датам":
+    if message.text == "\U0001F5D3 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§ ГЇГ® Г¤Г ГІГ Г¬":
         if not is_admin(tgid=message.from_user.id):
             return
-        await homeworks_list(message, "\U0001F4D2 Выберите дату", "\U0001F4CD")
+        await homeworks_list(message, "\U0001F4D2 Г‚Г»ГЎГҐГ°ГЁГІГҐ Г¤Г ГІГі", "\U0001F4CD")
         return
-    if message.text == "\U0001F464 Просмотреть дз по ученикам":
+    if message.text == "\U0001F464 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§ ГЇГ® ГіГ·ГҐГ­ГЁГЄГ Г¬":
         if not is_admin(tgid=message.from_user.id):
             return
-        await students_list(message, "\U0001F4D2 Выберите ученика", "\U0001F530")
+        await students_list(message, "\U0001F4D2 Г‚Г»ГЎГҐГ°ГЁГІГҐ ГіГ·ГҐГ­ГЁГЄГ ", "\U0001F530")
         return
-    if message.text == "\U0001F9F7 Назад":
+    if message.text == "\U0001F9F7 ГЌГ Г§Г Г¤":
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.row_width = 2
-        keyboard.add(*["\U0001F5D3 Просмотреть дз по датам", "\U0001F464 Просмотреть дз по ученикам", "\U00002b05 Назад на главную"])
+        keyboard.add(*["\U0001F5D3 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§ ГЇГ® Г¤Г ГІГ Г¬", "\U0001F464 ГЏГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј Г¤Г§ ГЇГ® ГіГ·ГҐГ­ГЁГЄГ Г¬", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
         return
     if message.text and "\U0001F530" in message.text:
         if not is_admin(tgid=message.from_user.id):
@@ -1002,13 +1002,13 @@ async def on_message(message: types.Message):
         db.execute(f"SELECT telegramid from waspusers WHERE name = '{fullname[1]}' AND surname = '{fullname[0]}' AND lastname = '{fullname[2]}';")
         id = db.fetchone()[0]
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Назад на главную"])
+        keyboard.add(*["\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
         db.execute(f"UPDATE waspadmins SET checking_homework_student = '{id}' WHERE telegramid = {message.from_user.id};")
         db.execute(f"SELECT homework_date FROM hwuploaded WHERE telegramid = {id};")
         dates = db.fetchall()
         for date in dates:
             keyboard.add(*[f"\U0001F5D2 {date[0]}"])
-        await message.answer(f"Выполненные дз ученика {fullname[0]} {fullname[1]}", reply_markup=keyboard)
+        await message.answer(f"Г‚Г»ГЇГ®Г«Г­ГҐГ­Г­Г»ГҐ Г¤Г§ ГіГ·ГҐГ­ГЁГЄГ  {fullname[0]} {fullname[1]}", reply_markup=keyboard)
         return
     if message.text and "\U0001F4AE" in message.text:
         if not is_admin(tgid=message.from_user.id):
@@ -1017,13 +1017,13 @@ async def on_message(message: types.Message):
         db.execute(f"SELECT telegramid from waspusers WHERE name = '{fullname[1]}' AND surname = '{fullname[0]}' AND lastname = '{fullname[2]}';")
         id = db.fetchone()[0]
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Назад к оценкам и посещаемости"])
+        keyboard.add(*["\U00002b05 ГЌГ Г§Г Г¤ ГЄ Г®Г¶ГҐГ­ГЄГ Г¬ ГЁ ГЇГ®Г±ГҐГ№Г ГҐГ¬Г®Г±ГІГЁ"])
         db.execute(f"UPDATE waspadmins SET checking_marks_student = '{id}' WHERE telegramid = {message.from_user.id};")
         db.execute(f"SELECT date FROM attendance WHERE telegramid = {id};")
         dates = db.fetchall()
         for date in dates:
             keyboard.add(*[f"\u2668 {date[0]}"])
-        await message.answer(f"\U0001F4D2 Выберите дату", reply_markup=keyboard)
+        await message.answer(f"\U0001F4D2 Г‚Г»ГЎГҐГ°ГЁГІГҐ Г¤Г ГІГі", reply_markup=keyboard)
         return
     if message.text and "\U00002620" in message.text:
         date = message.text.replace("\U00002620", "")
@@ -1032,20 +1032,20 @@ async def on_message(message: types.Message):
         if users:
             db.execute(f"UPDATE waspusers SET checked_homework_date = '{date}' WHERE telegramid = {message.from_user.id};")
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            keyboard.add(*["\U0001F515 Отменить отправку", "\U00002b05 Назад на главную"])
-            await message.answer("Вы уже отправили это дз.", reply_markup=keyboard)
+            keyboard.add(*["\U0001F515 ГЋГІГ¬ГҐГ­ГЁГІГј Г®ГІГЇГ°Г ГўГЄГі", "\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
+            await message.answer("Г‚Г» ГіГ¦ГҐ Г®ГІГЇГ°Г ГўГЁГ«ГЁ ГЅГІГ® Г¤Г§.", reply_markup=keyboard)
             return
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Отмена"])
+        keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
         db.execute(f"UPDATE waspusers SET sending_homework = TRUE WHERE telegramid = {message.from_user.id};")
         db.execute(f"INSERT INTO hwuploaded(telegramid, homework_date) VALUES({message.from_user.id}, '{date}');")
-        await message.answer("\U0001F53A Отправьте своё дз (Текст/Фото/Файл)", reply_markup=keyboard)
+        await message.answer("\U0001F53A ГЋГІГЇГ°Г ГўГјГІГҐ Г±ГўГ®Вё Г¤Г§ (Г’ГҐГЄГ±ГІ/Г”Г®ГІГ®/Г”Г Г©Г«)", reply_markup=keyboard)
         return
     if message.text and "\U0001F5C2" in message.text:
         try:
             date = message.text.replace("\U0001F5C2", "")
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            keyboard.add(*["\U00002b05 Отмена"])
+            keyboard.add(*["\U00002b05 ГЋГІГ¬ГҐГ­Г "])
             db.execute(f"SELECT * FROM hwcreated WHERE date = '{date}';")
             homework = db.fetchone()
             file_name = homework[1]
@@ -1055,15 +1055,15 @@ async def on_message(message: types.Message):
                 with open(f"homeworks/{text_file_name}", 'r') as f:
                     text_content = f.read()
                     f.close()
-            await bot.send_document(chat_id=message.from_user.id, document=open(f'homeworks/{file_name}', 'rb'), caption=text_content) #Отправка файла
+            await bot.send_document(chat_id=message.from_user.id, document=open(f'homeworks/{file_name}', 'rb'), caption=text_content) #ГЋГІГЇГ°Г ГўГЄГ  ГґГ Г©Г«Г 
             return
         except:
-            await message.answer("\u2757 Не удалось просмотреть это дз.")
+            await message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј ГЇГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј ГЅГІГ® Г¤Г§.")
     if message.text and "\u267B" in message.text:
         try:
             date = message.text.replace("\u267B", "")
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            keyboard.add(*["f Отмена"])
+            keyboard.add(*["f ГЋГІГ¬ГҐГ­Г "])
             db.execute(f"SELECT * FROM materialscreated WHERE date = '{date}';")
             homework = db.fetchone()
             file_name = homework[1]
@@ -1073,22 +1073,22 @@ async def on_message(message: types.Message):
                 with open(f"materials/{text_file_name}", 'r') as f:
                     text_content = f.read()
                     f.close()
-            await bot.send_document(chat_id=message.from_user.id, document=open(f'materials/{file_name}', 'rb'), caption=text_content) #Отправка файла
+            await bot.send_document(chat_id=message.from_user.id, document=open(f'materials/{file_name}', 'rb'), caption=text_content) #ГЋГІГЇГ°Г ГўГЄГ  ГґГ Г©Г«Г 
             return
         except:
-            await message.answer("\u2757 Не удалось просмотреть этот материал.")
+            await message.answer("\u2757 ГЌГҐ ГіГ¤Г Г«Г®Г±Гј ГЇГ°Г®Г±Г¬Г®ГІГ°ГҐГІГј ГЅГІГ®ГІ Г¬Г ГІГҐГ°ГЁГ Г«.")
     if message.text and "\U0001F4CD" in message.text:
         if not is_admin(tgid=message.from_user.id):
             return
         date = message.text.replace("\U0001F4CD", "")
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        keyboard.add(*["\U00002b05 Назад на главную"])
+        keyboard.add(*["\U00002b05 ГЌГ Г§Г Г¤ Г­Г  ГЈГ«Г ГўГ­ГіГѕ"])
         db.execute(f"UPDATE waspadmins SET checking_homework_date = '{date}' WHERE telegramid = {message.from_user.id};")
         db.execute(f"SELECT name, surname, lastname FROM hwuploaded INNER JOIN waspusers ON hwuploaded.telegramid = waspusers.telegramid WHERE homework_date = '{date}';")
         names = db.fetchall()
         for name in names:
             keyboard.add(*[f"\U0001F4DC {name[1]} {name[0]} {name[2]}"])
-        await message.answer(f"Выполненные дз на {date}", reply_markup=keyboard)
+        await message.answer(f"Г‚Г»ГЇГ®Г«Г­ГҐГ­Г­Г»ГҐ Г¤Г§ Г­Г  {date}", reply_markup=keyboard)
         return
     if message.text and "\U0001F4DC" in message.text:
         if not is_admin(tgid=message.from_user.id):
@@ -1097,10 +1097,10 @@ async def on_message(message: types.Message):
         db.execute(f"SELECT checking_homework_date FROM waspadmins WHERE telegramid = {message.from_user.id};")
         date = str(db.fetchone()[0]).replace('/', '_')
         files = os.listdir(f"homeworks_uploaded/{fullname}/{date}")
-        for file in files: #Отправка файла
+        for file in files: #ГЋГІГЇГ°Г ГўГЄГ  ГґГ Г©Г«Г 
             await message.answer_document(open(f"homeworks_uploaded/{fullname}/{date}/{file}", 'rb'))
         keyboard = inline_marks()
-        await message.answer(f"Дз {fullname}", reply_markup=keyboard)
+        await message.answer(f"Г„Г§ {fullname}", reply_markup=keyboard)
         return
     if message.text and "\U0001F5D2" in message.text:
         if not is_admin(tgid=message.from_user.id):
@@ -1113,10 +1113,10 @@ async def on_message(message: types.Message):
         date = date.replace('/', '_')
         fullname = " ".join(db.fetchone())
         files = os.listdir(f"homeworks_uploaded/{fullname}/{date}")
-        for file in files: #Отправка файла
+        for file in files: #ГЋГІГЇГ°Г ГўГЄГ  ГґГ Г©Г«Г 
             await message.answer_document(open(f"homeworks_uploaded/{fullname}/{date}/{file}", 'rb'))
         keyboard = inline_marks()
-        await message.answer(f"Дз {fullname}", reply_markup=keyboard)
+        await message.answer(f"Г„Г§ {fullname}", reply_markup=keyboard)
         return
 
 
