@@ -489,12 +489,15 @@ async def on_message(message: types.Message):
         if not registration:
             await message.answer("\u2757 В настоящий момент регистрация на курс закрыта.")
             return
-        msg = message.text.split(" ")
-        surname = msg[1]
-        name = msg[0]
-        lastname = msg[2]
-        tgreg_user(message.from_user.id, message.from_user.username, name, surname, lastname)
-        await homepage(message)
+        try:
+            msg = message.text.split(" ")
+            surname = msg[0]
+            name = msg[1]
+            lastname = msg[2]
+            tgreg_user(message.from_user.id, message.from_user.username, name, surname, lastname)
+            await homepage(message)
+        except:
+            await message.answer("Добрый день, для регистрации введите ваши ФИО.")
     if message.text == "\U00002b05 Отмена":
         if sending_homework(message.from_user.id):
             db.execute(f"DELETE FROM hwuploaded WHERE telegramid = {message.from_user.id} AND upload_date ISNULL;")
