@@ -70,10 +70,10 @@ async def on_voice_state_update(member, before, after):
     date = datetime.now().strftime("%d/%m/%Y")
     time = datetime.now().time().strftime("%H:%M:%S")
     if after.channel and after.channel != before.channel:
-       print(f"Ïîëüçîâàòåëü {member.id} çàø¸ë â {after.channel.name} {datetime.now().date()} â {datetime.now().time().replace(microsecond=0)}")
+       print(f"Пользователь {member.id} зашёл в {after.channel.name} {datetime.now().date()} в {datetime.now().time().replace(microsecond=0)}")
        db.execute(f"UPDATE attendance SET last_join = '{time}', mark = '-' WHERE discordid = {member.id} and date = '{date}';")
     if before.channel and after.channel != before.channel:
-       print(f"Ïîëüçîâàòåëü {member.id} âûøåë èç {before.channel.name} {datetime.now().date()} â {datetime.now().time().replace(microsecond=0)}")
+       print(f"Пользователь {member.id} вышел из {before.channel.name} {datetime.now().date()} в {datetime.now().time().replace(microsecond=0)}")
        db.execute(f"UPDATE attendance SET last_leave = '{time}' WHERE discordid = {member.id} and date = '{date}';")
        calculate_attendance_time(member, time)
 
@@ -127,17 +127,17 @@ async def on_member_update(before, after):
             break
 
 
-@tree.command(name="startlesson", description="Íà÷àòü óðîê", guild=discord.Object(id=server_id))
+@tree.command(name="startlesson", description="Начать урок", guild=discord.Object(id=server_id))
 async def start_lesson(interaction):
     if not interaction.user.guild_permissions.administrator:
-        await interaction.response.send_message("Íåäîñòàòî÷íî ïðàâ.", ephemeral=True)
+        await interaction.response.send_message("Недостаточно прав.", ephemeral=True)
         return
     global isLesson, lesson_start_time
     isLesson = True
     date = datetime.now().strftime("%d/%m/%Y")
     time = datetime.now().time().strftime("%H:%M:%S")
     lesson_start_time = datetime.now()
-    await interaction.response.send_message("Âû íà÷àëè óðîê.", ephemeral=True)
+    await interaction.response.send_message("Вы начали урок.", ephemeral=True)
     db.execute(f"SELECT * FROM attendance WHERE date = '{date}';")
     date_exists = db.fetchall()
     if date_exists:
@@ -146,17 +146,17 @@ async def start_lesson(interaction):
     users = db.fetchall()
     for user in users:
         fullname = f"{user[4]} {user[3]} {user[5]}"
-        db.execute(f"INSERT INTO attendance(telegramid, discordid, fullname, date, mark, attendance_time, attendance) VALUES({user[1]}, {user[0]}, '{fullname}', '{date}', 'í', 0, '0%');")
+        db.execute(f"INSERT INTO attendance(telegramid, discordid, fullname, date, mark, attendance_time, attendance) VALUES({user[1]}, {user[0]}, '{fullname}', '{date}', 'н', 0, '0%');")
     voice_channel = client.get_channel(voice_channel_id)
     members = voice_channel.members
     for member in members:
         db.execute(f"UPDATE attendance SET last_join = '{time}', mark = '-' WHERE discordid = {member.id} and date = '{date}';")
 
 
-@tree.command(name="endlesson", description="Çàêîí÷èòü óðîê", guild=discord.Object(id=server_id))
+@tree.command(name="endlesson", description="Закончить урок", guild=discord.Object(id=server_id))
 async def end_lesson(interaction):
     if not interaction.user.guild_permissions.administrator:
-        await interaction.response.send_message("Íåäîñòàòî÷íî ïðàâ.", ephemeral=True)
+        await interaction.response.send_message("Недостаточно прав.", ephemeral=True)
         return
     global isLesson, lesson_start_time, lesson_end_time
     if not isLesson:
@@ -181,22 +181,22 @@ async def end_lesson(interaction):
             db.execute(f"UPDATE attendance SET attendance = '{round(attendance)}%' WHERE discordid = {user[1]} and date = '{user[0]}';")
         except:
             pass
-    await interaction.response.send_message("Âû çàâåðøèëè óðîê.", ephemeral=True)
+    await interaction.response.send_message("Вы завершили урок.", ephemeral=True)
 
 
-@tree.command(name="reg", description="Çàðåãèñòðèðîâàòüñÿ", guild=discord.Object(id=server_id))
-async def reg(interaction, ôàìèëèÿ: str, èìÿ: str, îò÷åñòâî: str):
+@tree.command(name="reg", description="Зарегистрироваться", guild=discord.Object(id=server_id))
+async def reg(interaction, фамилия: str, имя: str, отчество: str):
     db.execute(f"SELECT * FROM waspusers WHERE discordid = '{interaction.user.id}'")
     user = db.fetchone()
     if user:
-        await interaction.response.send_message("Âû óæå çàðåãèñòðèðîâàíû.", ephemeral=True)
+        await interaction.response.send_message("Вы уже зарегистрированы.", ephemeral=True)
         return
-    db.execute(f"SELECT * FROM waspusers WHERE name = '{èìÿ}' AND surname = '{ôàìèëèÿ}' AND lastname = '{îò÷åñòâî}';")
+    db.execute(f"SELECT * FROM waspusers WHERE name = '{имя}' AND surname = '{фамилия}' AND lastname = '{отчество}';")
     user = db.fetchone()
     if not user:
-        await interaction.response.send_message("\u2757 Ñíà÷àëà çàðåãèñòðèðóéòåñü â áîòå Telegram,\nçàòåì â Discord ñ òåìè æå ÔÈÎ.", ephemeral=True)
+        await interaction.response.send_message("\u2757 Сначала зарегистрируйтесь в боте Telegram,\nзатем в Discord с теми же ФИО.", ephemeral=True)
         return
-    db.execute(f"UPDATE waspusers SET discordid = {interaction.user.id} WHERE name = '{èìÿ}' AND surname = '{ôàìèëèÿ}' AND lastname = '{îò÷åñòâî}';")
-    await interaction.response.send_message("\u2705 Óñïåøíàÿ ðåãèñòðàöèÿ.", ephemeral=True)
+    db.execute(f"UPDATE waspusers SET discordid = {interaction.user.id} WHERE name = '{имя}' AND surname = '{фамилия}' AND lastname = '{отчество}';")
+    await interaction.response.send_message("\u2705 Успешная регистрация.", ephemeral=True)
 
 client.run(token)
