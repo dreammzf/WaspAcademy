@@ -283,17 +283,17 @@ def tgreg_admin(tgid, tgname, name, surname, lastname):
 
 #Добавить ученику стингеры
 def add_stingers(tgid=None, tgname=None, stingers=0):
-    # try:
-    if tgid == None:
-        db.execute(f"SELECT stingers FROM waspusers WHERE telegramname = '{tgname}';")
-        stingers_amount = db.fetchone()[0]
-        db.execute(f"UPDATE waspusers SET stingers = {stingers_amount+stingers} WHERE telegramname = '{tgname}';")
-    else:
-        db.execute(f"SELECT stingers FROM waspusers WHERE telegramid = '{tgid}';")
-        stingers_amount = db.fetchone()[0]
-        db.execute(f"UPDATE waspusers SET stingers = {stingers_amount+stingers} WHERE telegramid = '{tgid}';")
-    # except:
-    #     print(f"Unable to add stingers to user")
+    try:
+        if tgid == None:
+            db.execute(f"SELECT stingers FROM waspusers WHERE telegramname = '{tgname}';")
+            stingers_amount = db.fetchone()[0]
+            db.execute(f"UPDATE waspusers SET stingers = {stingers_amount+stingers} WHERE telegramname = '{tgname}';")
+        else:
+            db.execute(f"SELECT stingers FROM waspusers WHERE telegramid = '{tgid}';")
+            stingers_amount = db.fetchone()[0]
+            db.execute(f"UPDATE waspusers SET stingers = {stingers_amount+stingers} WHERE telegramid = '{tgid}';")
+    except:
+        print(f"Unable to add stingers to user")
 
 
 #Домашняя страница
