@@ -24,10 +24,10 @@ lesson_start_time = str()
 lesson_end_time = str()
 
 def db_connect():
-    host = "wasp-edu-tg-server.postgres.database.azure.com"
-    dbname = "postgres"
-    user = "dbadmin"
-    password = "hVsx8LVvZpwLf06hgzxf8cxiHE1Bq95U0MmKve07ZUEpWiop"
+    host = ""
+    dbname = ""
+    user = ""
+    password = ""
     try:
         connection = psycopg2.connect(host=host,
                                 dbname=dbname,
