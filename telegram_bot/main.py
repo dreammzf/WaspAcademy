@@ -37,10 +37,10 @@ registration = True
 
 #Подключение к базе данных
 def db_connect():
-    host = ""
-    dbname = ""
-    user = ""
-    password = ""
+    host = "194.87.209.220"
+    dbname = "wasp"
+    user = "postgres"
+    password = "123321"
     try:
         connection = psycopg2.connect(host=host,
                                 dbname=dbname,
