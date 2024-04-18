@@ -312,6 +312,7 @@ async def homepage(message: types.Message):
         keyboard.add("\U0001F3EE Назначить организатора")
         keyboard.add(registration_button)
         await message.answer(f"Добрый день, {select_admin_name(message.from_user.id)}", reply_markup=keyboard)
+        return True
     else:
         keyboard.add("\U0001F41D Профиль")
         keyboard.add("\U0001F4DA Материалы текущего модуля")
