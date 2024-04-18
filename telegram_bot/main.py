@@ -28,7 +28,7 @@ except:
     pass
 
 #Токен бота
-API_TOKEN = 'BOT_TOKEN'
+API_TOKEN = '6129510695:AAEbZco2cX_cHSXrgeClHfpoklvCGgRXR58'
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
