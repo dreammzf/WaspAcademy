@@ -312,7 +312,7 @@ async def homepage(message: types.Message):
         keyboard.add("\U0001F3EE Назначить организатора")
         keyboard.add(registration_button)
         await message.answer(f"Добрый день, {select_admin_name(message.from_user.id)}", reply_markup=keyboard)
-        return True
+        return
     else:
         keyboard.add("\U0001F41D Профиль")
         keyboard.add("\U0001F4DA Материалы текущего модуля")
@@ -1086,7 +1086,7 @@ async def on_message(message: types.Message):
         try:
             date = message.text.replace("\u267B", "")
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            keyboard.add(*["f Отмена"])
+            keyboard.add(*["f Отмена"]);
             db.execute(f"SELECT * FROM materialscreated WHERE date = '{date}';")
             homework = db.fetchone()
             file_name = homework[1]
@@ -1145,3 +1145,4 @@ async def on_message(message: types.Message):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
+    
