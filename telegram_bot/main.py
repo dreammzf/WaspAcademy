@@ -312,7 +312,6 @@ async def homepage(message: types.Message):
         keyboard.add("\U0001F3EE Назначить организатора")
         keyboard.add(registration_button)
         await message.answer(f"Добрый день, {select_admin_name(message.from_user.id)}", reply_markup=keyboard)
-        return
     else:
         keyboard.add("\U0001F41D Профиль")
         keyboard.add("\U0001F4DA Материалы текущего модуля")
@@ -373,23 +372,23 @@ async def attendance_page(message: types.Message):
 
 #Список материалов
 async def materials_list(message: types.Message, text: str, symbol: str):
-    db.execute("SELECT date FROM materialscreated;")
+    db.execute("SELECT date, time FROM materialscreated;")
     materials = db.fetchall()
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add("\U00002b05 Назад к материалам")
     for material in materials:
-        keyboard.add(*[f"{symbol}{material[0]}"])
+        keyboard.add(*[f"{symbol}{material[0]} {material[1]}"])
     await message.answer(text, reply_markup=keyboard)
 
 
 #Список дз
 async def homeworks_list(message: types.Message, text: str, symbol: str):
-    db.execute("SELECT date FROM hwcreated;")
+    db.execute("SELECT date, time FROM hwcreated;")
     homeworks = db.fetchall()
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add("\U00002b05 Назад к домашним заданиям")
     for homework in homeworks:
-        keyboard.add(*[f"{symbol}{homework[0]}"])
+        keyboard.add(*[f"{symbol}{homework[0]} {material[1]}"])
     await message.answer(text, reply_markup=keyboard)
 
 
@@ -1145,4 +1144,3 @@ async def on_message(message: types.Message):
 
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
-    
