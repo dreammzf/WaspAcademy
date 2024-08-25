@@ -5,15 +5,15 @@ import psycopg2
 from discord import app_commands
 
 token = ''
-server_id = 872607623512461322
-main_channel_id = 1056260859724308491
-voice_channel_id = 1056256497081929829
-role_5_id = 1056628684112547880
-role_4_id = 1056628696083087380
-role_3_id = 1056628709731340338
-role_2_id = 1056628713875325048
-role_1_id = 1056628796020752384
-role_0_id = 1056628803411116163
+server_id = SERVER_ID
+main_channel_id = MAIN_CHANNEL_ID
+voice_channel_id = VOICE_CHANNEL_ID
+role_5_id = ROLE_5_CHANNEL_ID
+role_4_id = ROLE_4_CHANNEL_ID
+role_3_id = ROLE_3_CHANNEL_ID
+role_2_id = ROLE_2_CHANNEL_ID
+role_1_id = ROLE_1_CHANNEL_ID
+role_0_id = ROLE_0_CHANNEL_ID
 
 intents = discord.Intents.default()
 intents.members = True
@@ -24,10 +24,10 @@ lesson_start_time = str()
 lesson_end_time = str()
 
 def db_connect():
-    host = "194.87.209.220"
-    dbname = "wasp"
-    user = "postgres"
-    password = "123321"
+    host = "HOST_IP"
+    dbname = "DB_NAME"
+    user = "DB_USER"
+    password = "DB_PASSWORD"
     try:
         connection = psycopg2.connect(host=host,
                                 dbname=dbname,
