@@ -28,7 +28,7 @@ except:
     pass
 
 #Токен бота
-API_TOKEN = '6129510695:AAEbZco2cX_cHSXrgeClHfpoklvCGgRXR58'
+API_TOKEN = 'BOT_TOKEN'
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
@@ -37,10 +37,10 @@ registration = True
 
 #Подключение к базе данных
 def db_connect():
-    host = "194.87.209.220"
-    dbname = "wasp"
-    user = "postgres"
-    password = "123321"
+    host = "HOST_IP"
+    dbname = "DB_NAME"
+    user = "DB_USER"
+    password = "DB_PASSWORD"
     try:
         connection = psycopg2.connect(host=host,
                                 dbname=dbname,
